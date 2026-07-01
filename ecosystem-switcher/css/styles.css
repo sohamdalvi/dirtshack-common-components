@@ -316,244 +316,138 @@ h1, h2, h3 { line-height: 1.04; letter-spacing: -0.02em; font-weight: 700; }
 .nav.open .nav-toggle-bars span:nth-child(2) { opacity: 0; }
 .nav.open .nav-toggle-bars span:nth-child(3) { top: 6px; transform: rotate(-45deg); }
 
-/* ----------  Ecosystem switcher  ---------- */
-.ecosystem-switcher-mount {
-  position: relative;
-  z-index: var(--z-raised);
-  flex-shrink: 0;
+/* ----------  Ecosystem navigation (persistent, cross-portal)  ----------
+   Desktop  ≥761px: floating vertical rail, centered on the right edge.
+   Mobile   ≤760px: fixed bottom strip, tab-bar style.
+   Deliberately NOT a dropdown/launcher — all destinations stay visible at
+   all times so switching between Home/Garage/Shop/Academy/Marketplace
+   reads as first-class navigation, not a hidden menu. Kept structurally
+   separate from .site-header so it's never confused with in-page nav
+   (search/account/cart) and can be mounted anywhere in the DOM since it
+   is always position: fixed. */
+:root {
+  --eco-bar-height: 64px; /* mobile strip height incl. label — host pages
+                              embedding this on non-DirtShack shells should
+                              add matching padding-bottom to <body> at
+                              max-width:760px so content isn't hidden under it */
 }
-.ecosystem-switcher {
-  position: relative;
-}
-.ecosystem-switcher-trigger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  min-height: 40px;
-  min-width: 54px;
-  padding: 0.35rem 0.5rem 0.35rem 0.4rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.08));
-  color: #ffffff;
-  box-shadow: 0 14px 30px -22px rgba(0,0,0,0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  transition:
-    transform 0.2s var(--ease),
-    background 0.2s var(--ease),
-    border-color 0.2s var(--ease),
-    box-shadow 0.2s var(--ease);
-}
-.ecosystem-switcher-trigger:hover,
-.ecosystem-switcher.is-open .ecosystem-switcher-trigger {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.12));
-  border-color: rgba(255,255,255,0.22);
-  box-shadow: 0 18px 36px -22px rgba(0,0,0,0.95), 0 0 0 1px rgba(196,224,0,0.14);
-  transform: translateY(-1px);
-}
-.ecosystem-trigger-mark {
-  display: block;
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
-}
-.ecosystem-trigger-mark--switch {
-  width: 20px;
-  height: 28px;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 6px;
-}
-.ecosystem-trigger-caret {
-  width: 13px;
-  height: 13px;
-  opacity: 0.78;
-  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
-}
-.ecosystem-switcher.is-open .ecosystem-trigger-caret {
-  transform: rotate(180deg);
-  opacity: 1;
-}
-.ecosystem-backdrop {
+
+.ecosystem-nav {
   position: fixed;
-  inset: 0;
-  background: rgba(7, 7, 6, 0.4);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  z-index: 900;
+  display: flex;
+  margin: 0;
+  padding: 0;
 }
-.ecosystem-panel {
-  position: absolute;
-  top: calc(100% + 0.85rem);
-  left: 0;
-  width: min(92vw, 560px);
-  padding: 1.15rem;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.16);
-  background:
-    linear-gradient(180deg, rgba(18,18,18,0.96), rgba(12,12,12,0.92));
-  box-shadow:
-    0 26px 60px -28px rgba(0,0,0,0.9),
-    0 0 0 1px rgba(255,255,255,0.04) inset;
-  color: #ffffff;
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  transform-origin: top left;
-}
-.ecosystem-switcher.is-open .ecosystem-panel {
-  animation: ecosystem-panel-in 200ms var(--ease);
-}
-@keyframes ecosystem-panel-in {
-  from { opacity: 0; transform: translateY(-10px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-.ecosystem-panel-head {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: start;
-  gap: 0.8rem;
-  margin-bottom: 1rem;
-}
-.ecosystem-panel-eyebrow {
-  grid-column: 1 / 2;
-  font-size: 0.74rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(212,241,42,0.82);
-}
-.ecosystem-panel-heading {
-  display: grid;
-  gap: 0.35rem;
-}
-.ecosystem-panel-heading h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2vw, 1.7rem);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-}
-.ecosystem-panel-heading p {
-  color: rgba(255,255,255,0.68);
-  font-size: 0.95rem;
-  max-width: 34ch;
-}
-.ecosystem-close {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.05);
-  color: #ffffff;
-  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease);
-}
-.ecosystem-close:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.22);
-  transform: translateY(-1px);
-}
-.ecosystem-close svg {
-  width: 18px;
-  height: 18px;
-  margin: auto;
-}
-.ecosystem-panel-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8rem;
-}
-.ecosystem-card {
+
+.ecosystem-item {
   position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.85rem;
-  min-height: 112px;
-  padding: 1rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-  box-shadow: 0 18px 36px -28px rgba(0,0,0,0.7);
-  transition:
-    transform 0.2s var(--ease),
-    border-color 0.2s var(--ease),
-    background 0.2s var(--ease),
-    box-shadow 0.2s var(--ease);
+  display: flex;
+  text-decoration: none;
 }
-.ecosystem-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(212,241,42,0.22);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
-  box-shadow: 0 24px 42px -26px rgba(0,0,0,0.75);
-}
-.ecosystem-card.is-active {
-  border-color: rgba(196,224,0,0.42);
-  background:
-    linear-gradient(180deg, rgba(196,224,0,0.18), rgba(255,255,255,0.08));
-  box-shadow: 0 24px 42px -26px rgba(0,0,0,0.82), 0 0 0 1px rgba(196,224,0,0.18) inset;
-}
-.ecosystem-card-icon {
+.ecosystem-item-icon {
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.1);
-  font-size: 1.2rem;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+  flex-shrink: 0;
 }
-.ecosystem-card-copy {
-  display: grid;
-  gap: 0.38rem;
-  min-width: 0;
+.ecosystem-item-icon svg {
+  display: block;
+  width: 22px;
+  height: 22px;
 }
-.ecosystem-card-topline {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  align-items: center;
+.ecosystem-item-label--mobile { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ecosystem-item { transition: none !important; }
 }
-.ecosystem-card-title {
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
+
+/* ----  Desktop: right-center vertical rail  ---- */
+@media (min-width: 761px) {
+  .ecosystem-nav {
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.5rem;
+    border-radius: var(--r-lg);
+    border: 1px solid rgba(255,255,255,0.14);
+    background: linear-gradient(180deg, rgba(18,18,18,0.94), rgba(10,10,10,0.9));
+    box-shadow: 0 26px 60px -28px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.04) inset;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .ecosystem-item {
+    align-items: center;
+    gap: 0.65rem;
+    min-height: 48px;
+    padding: 0.6rem 0.9rem;
+    border-radius: 12px;
+    color: rgba(255,255,255,0.8);
+    white-space: nowrap;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+  .ecosystem-item-label--desktop {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .ecosystem-item:hover {
+    background: rgba(255,255,255,0.08);
+    color: #ffffff;
+    transform: translateX(-2px);
+  }
+  .ecosystem-item.is-active {
+    background: linear-gradient(180deg, rgba(196,224,0,0.22), rgba(255,255,255,0.06));
+    color: #ffffff;
+    box-shadow: 0 0 0 1px rgba(196,224,0,0.32) inset;
+  }
+  .ecosystem-item:focus-visible {
+    outline: 2px solid var(--lime-2);
+    outline-offset: 2px;
+  }
 }
-.ecosystem-card-badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  padding: 0.18rem 0.55rem;
-  border-radius: 999px;
-  background: rgba(196,224,0,0.18);
-  color: #e8f7a0;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.ecosystem-card-description {
-  color: rgba(255,255,255,0.76);
-  font-size: 0.9rem;
-  line-height: 1.45;
-}
-.ecosystem-card-url {
-  color: rgba(255,255,255,0.5);
-  font-size: 0.78rem;
-  letter-spacing: 0.02em;
-  word-break: break-word;
-}
-.ecosystem-panel-foot {
-  margin-top: 1rem;
-  color: rgba(255,255,255,0.62);
-  font-size: 0.82rem;
-}
-.ecosystem-panel-foot strong {
-  color: #ffffff;
+
+/* ----  Mobile: fixed bottom strip  ---- */
+@media (max-width: 760px) {
+  .ecosystem-item-label--desktop { display: none; }
+  .ecosystem-item-label--mobile { display: block; }
+
+  .ecosystem-nav {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: row;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    background: linear-gradient(180deg, rgba(16,16,16,0.97), rgba(6,6,6,0.99));
+    box-shadow: 0 -12px 30px -18px rgba(0,0,0,0.6);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .ecosystem-item {
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    min-height: 56px;
+    padding: 0.5rem 0.25rem;
+    color: rgba(255,255,255,0.64);
+    transition: color 0.2s var(--ease);
+  }
+  .ecosystem-item-label--mobile {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .ecosystem-item.is-active { color: #d4f12a; }
+  .ecosystem-item:focus-visible {
+    outline: 2px solid var(--lime-2);
+    outline-offset: -2px;
+  }
 }
 
 /* ----------  Hero  ---------- */
@@ -741,53 +635,6 @@ section[id] { scroll-margin-top: 78px; }
   .brand { grid-column: 1; }
   .brand img { max-height: 30px; max-width: min(58vw, 300px); }
   .nav-toggle { display: inline-flex; }
-
-  .ecosystem-switcher-trigger {
-    min-height: 48px;
-    min-width: 56px;
-    padding: 0.35rem 0.5rem 0.35rem 0.4rem;
-    border-radius: 14px;
-  }
-  .ecosystem-trigger-mark {
-    width: 30px;
-    height: 30px;
-  }
-  .ecosystem-trigger-mark--switch {
-    width: 20px;
-    height: 28px;
-  }
-  .ecosystem-panel {
-    position: fixed;
-    left: 0.75rem;
-    right: 0.75rem;
-    top: auto;
-    bottom: 0.75rem;
-    width: auto;
-    max-height: min(78vh, 640px);
-    overflow: auto;
-    border-radius: 22px;
-    padding: 1rem 1rem 1.15rem;
-    transform-origin: bottom center;
-  }
-  .ecosystem-switcher.is-open .ecosystem-panel {
-    animation: ecosystem-sheet-in 220ms var(--ease);
-  }
-  @keyframes ecosystem-sheet-in {
-    from { opacity: 0; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .ecosystem-panel-grid {
-    grid-template-columns: 1fr;
-  }
-  .ecosystem-card {
-    min-height: 96px;
-    padding: 0.95rem;
-  }
-  .ecosystem-card,
-  .ecosystem-switcher-trigger,
-  .ecosystem-close {
-    min-height: 48px;
-  }
 
   .nav-desktop {
     position: absolute;

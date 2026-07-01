@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DirtShack Ecosystem Nav — Demo</title>
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  /* Demo-only scaffolding, not part of the shared component */
+  body { padding-bottom: 0; }
+  @media (max-width: 760px) {
+    body { padding-bottom: var(--eco-bar-height); }
+  }
+  .demo-content { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem; }
+  .demo-content h1 { font-family: var(--font-display); font-size: 2rem; text-transform: uppercase; margin-bottom: 1rem; }
+  .demo-content p { color: var(--muted); margin-bottom: 1rem; }
+  .demo-switch { position: fixed; top: 80px; left: 1rem; z-index: 1200; display: flex; gap: 0.4rem; flex-wrap: wrap; max-width: 220px; }
+  .demo-switch button { font-size: 0.7rem; padding: 0.4rem 0.6rem; border-radius: 8px; border: 1px solid var(--glass-line-2); background: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-shell">
+      <nav class="nav">
+        <div class="nav-brand-group">
+          <a class="brand" href="#"><strong>DirtShack</strong></a>
+        </div>
+        <div class="nav-desktop">
+          <ul class="nav-links">
+            <li><a href="#">New Arrivals</a></li>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">Deals</a></li>
+          </ul>
+          <div class="nav-actions">
+            <a class="nav-cta" href="#">Search / Account / Cart</a>
+          </div>
+        </div>
+        <button class="nav-toggle" type="button" aria-label="Toggle menu">
+          <span class="nav-toggle-bars"><span></span><span></span><span></span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="demo-switch">
+    <button type="button" data-portal="brand">Home</button>
+    <button type="button" data-portal="garage">Garage</button>
+    <button type="button" data-portal="shop">Shop</button>
+    <button type="button" data-portal="academy">Academy</button>
+    <button type="button" data-portal="marketplace">Marketplace</button>
+  </div>
+
+  <main class="demo-content">
+    <h1>Ecosystem Nav Demo</h1>
+    <p>This page exists only to preview the persistent ecosystem navigation in isolation. On desktop it renders as a floating vertical rail centered on the right edge; on mobile (resize below 760px) it becomes a fixed bottom strip.</p>
+    <p>Use the buttons in the top-left to simulate viewing this page from a different portal — the active state below reflects whichever portal is "current".</p>
+    <p>Scroll to confirm the nav stays fixed in place and never obscures the header's own search/account/cart controls, which remain a separate, in-page navigation concern.</p>
+    <p style="height: 60vh;"></p>
+    <p>End of scrollable content.</p>
+  </main>
+
+  <div data-ecosystem-switcher data-current-portal="brand"></div>
+
+  <script src="js/ecosystem-switcher.config.js?v=4"></script>
+  <script src="js/ecosystem-switcher.js?v=4"></script>
+  <script>
+    document.querySelectorAll(".demo-switch button").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var mount = document.querySelector("[data-ecosystem-switcher]");
+        mount.setAttribute("data-current-portal", btn.getAttribute("data-portal"));
+        // re-render using the same config already loaded
+        var mounts = document.querySelectorAll("[data-ecosystem-switcher]");
+        // Simplest re-render: reload the script's render by dispatching DOMContentLoaded logic manually
+        var script = document.createElement("script");
+        script.src = "js/ecosystem-switcher.js?" + Date.now();
+        document.body.appendChild(script);
+      });
+    });
+  </script>
+</body>
+</html>
