@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4173"],
       "port": 4173
+    },
+    {
+      "name": "dirtshack-home-preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4174", "--directory", "/Volumes/SysExtStorage/git/DirtShack/dirtshack-home"],
+      "port": 4174
     }
   ]
 }
