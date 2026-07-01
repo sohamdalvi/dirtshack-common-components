@@ -12,6 +12,24 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4174", "--directory", "/Volumes/SysExtStorage/git/DirtShack/dirtshack-home"],
       "port": 4174
+    },
+    {
+      "name": "dirtshack-garage-preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4175", "--directory", "/Volumes/SysExtStorage/git/DirtShack/dirtshack-garage"],
+      "port": 4175
+    },
+    {
+      "name": "dirtshack-academy-preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4176", "--directory", "/Volumes/SysExtStorage/git/DirtShack/dirtshack-academy"],
+      "port": 4176
+    },
+    {
+      "name": "dirtshack-market-preview",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd /Volumes/SysExtStorage/git/DirtShack/dirtshack-market && npm run dev -- -p 4177"],
+      "port": 4177
     }
   ]
 }
